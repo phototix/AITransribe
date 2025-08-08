@@ -7,6 +7,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 $session_id = $data['session_id'] ?? '';
 $language = $data['language'] ?? 'en';
+$last_id = $data['last_id'] ?? '';
 $last_update = $data['last_update'] ?? date('Y-m-d').' 00:00:00';
 
 try {
@@ -14,46 +15,51 @@ try {
     $stmt = $pdo->prepare("SELECT * FROM transcripts WHERE session_id = ? ORDER BY timestamp DESC LIMIT 1");
     $stmt->execute([$session_id]);
     $transcript = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if ($transcript) {
-        // Get OpenAI key for this session
-        $stmt = $pdo->prepare("SELECT openai_key, model FROM sessions WHERE id = ?");
-        $stmt->execute([$session_id]);
-        $session = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if ($session) {
-            // Translate using OpenAI
-            $translation = translateWithOpenAI(
-                $session['openai_key'],
-                $session['model'],
-                $transcript['text'],
-                $transcript['language'],
-                $language
-            );
+
+    if($last_id<>$transcript['id']){
+        if ($transcript) {
+            // Get OpenAI key for this session
+            $stmt = $pdo->prepare("SELECT openai_key, model FROM sessions WHERE id = ?");
+            $stmt->execute([$session_id]);
+            $session = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            if ($translation) {
-                // Save translation
-                $stmt = $pdo->prepare("INSERT INTO translations (session_id, original_text, translated_text, source_lang, target_lang, timestamp) VALUES (?, ?, ?, ?, ?, ?)");
-                $stmt->execute([
-                    $session_id,
+            if ($session) {
+                // Translate using OpenAI
+                $translation = translateWithOpenAI(
+                    $session['openai_key'],
+                    $session['model'],
                     $transcript['text'],
-                    $translation,
                     $transcript['language'],
-                    $language,
-                    $transcript['timestamp']
-                ]);
+                    $language
+                );
                 
-                echo json_encode([
-                    'success' => true,
-                    'translation' => [
-                        'text' => $translation,
-                        'timestamp' => $transcript['timestamp']
-                    ]
-                ]);
-                exit;
+                if ($translation) {
+                    // Save translation
+                    $stmt = $pdo->prepare("INSERT INTO translations (session_id, original_text, translated_text, source_lang, target_lang, timestamp) VALUES (?, ?, ?, ?, ?, ?)");
+                    $stmt->execute([
+                        $session_id,
+                        $transcript['text'],
+                        $translation,
+                        $transcript['language'],
+                        $language,
+                        $transcript['timestamp']
+                    ]);
+                    
+                    echo json_encode([
+                        'success' => true,,
+                        'transcript_id' => $transcript['id'],
+                        'translation' => [
+                            'text' => $translation,
+                            'timestamp' => $transcript['timestamp'],
+                        ]
+                    ]);
+                    exit;
+                }
             }
         }
     }
+    
+
     
     // No new content
     echo json_encode([

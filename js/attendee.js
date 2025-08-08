@@ -124,6 +124,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let lastUpdate = 0;
         let isSpeaking = false;
 
+        const lastTranscriptId = document.getElementById('lastTranscriptId').value;
+
         // Add event listeners for speech synthesis
         synth.onstart = function() {
             isSpeaking = true;
@@ -141,22 +143,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 const response = await apiRequest('translate.php', {
                     session_id: sessionId,
                     language: currentLanguage,
-                    last_update: lastUpdate
+                    last_update: lastUpdate,
+                    last_id: lastTranscriptId
                 });
                 if (response.success && response.translation) {
+                    document.getElementById('lastTranscriptId').value = response.transcript_id;
                     console.log(response.translation.text);
                     document.getElementById('translationText').textContent = response.translation.text;
                     lastUpdate = response.translation.timestamp;
 
-                    // Read aloud if enabled
-                    if (audioEnabled && response.translation.text) {
-                        if (utterance) {
-                            synth.cancel();
+                    if(lastTranscriptId === response.transcript_id){
+
+                    }else{
+                        // Read aloud if enabled
+                        if (audioEnabled && response.translation.text) {
+                            if (utterance) {
+                                synth.cancel();
+                            }
+                            utterance = new SpeechSynthesisUtterance(response.translation.text);
+                            utterance.lang = currentLanguage;
+                            synth.speak(utterance);
                         }
-                        utterance = new SpeechSynthesisUtterance(response.translation.text);
-                        utterance.lang = currentLanguage;
-                        synth.speak(utterance);
                     }
+                        
                 }
                 
                 // Continue polling if session is still active
