@@ -58,13 +58,17 @@ try {
                 }
             }
         }
+
+    }else{
+
+        // No new content
+        echo json_encode([
+            'success' => true,
+            'translation' => "No new content"
+        ]);
     }
     
-    // No new content
-    echo json_encode([
-        'success' => true,
-        'translation' => "No new content"
-    ]);
+
 } catch (PDOException $e) {
     echo json_encode([
         'success' => false,
