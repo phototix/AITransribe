@@ -73,6 +73,12 @@ try {
                     }
                 }
                     
+            }else{
+                // No new content
+                echo json_encode([
+                    'success' => true,
+                    'translation' => "No new content"
+                ]);
             }
         }
 
