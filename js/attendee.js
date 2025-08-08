@@ -149,6 +149,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     last_update: lastUpdate,
                     last_id: lastTranscriptId
                 });
+                console.log(response.success);
+                
                 if (response.success && response.translation) {
 
                     if(document.getElementById('lastTranscriptId').value == response.transcript_id){
