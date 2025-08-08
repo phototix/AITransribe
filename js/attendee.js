@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             sessionStatusText.textContent = isSessionActive 
-                ? 'Session is active' 
+                ? 'Session is started' 
                 : 'Session is not active yet';
             sessionStatusAlert.className = `alert ${isSessionActive ? 'alert-success' : 'alert-warning'}`;
         }
