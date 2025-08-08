@@ -132,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 last_update: lastUpdate
             });
 
+            console.log("Get translate-01");
             if (response.success && response.translation) {
                 console.log(response.translation.text);
                 document.getElementById('translationText').textContent = response.translation.text;
@@ -145,6 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     utterance = new SpeechSynthesisUtterance(response.translation.text);
                     utterance.lang = currentLanguage;
                     synth.speak(utterance);
+                    console.log("Get translate-02-Reading");
                 }
             }
 
