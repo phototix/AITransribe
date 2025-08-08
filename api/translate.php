@@ -60,7 +60,7 @@ try {
     // No new content
     echo json_encode([
         'success' => true,
-        'translation' => null
+        'translation' => "No new content"
     ]);
 } catch (PDOException $e) {
     echo json_encode([
