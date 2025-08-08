@@ -15,7 +15,7 @@ try {
     $stmt = $pdo->prepare("SELECT * FROM transcripts WHERE session_id = ? ORDER BY timestamp DESC LIMIT 1");
     $stmt->execute([$session_id]);
     $transcript = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
     if ($transcript) {
         // Get OpenAI key for this session
         $stmt = $pdo->prepare("SELECT openai_key, model FROM sessions WHERE id = ?");
@@ -45,7 +45,7 @@ try {
                 ]);
                 
                 echo json_encode([
-                    'success' => true,
+                    'success' => true,,
                     'transcript_id' => $transcript['id'],
                     'translation' => [
                         'text' => $translation,
@@ -60,17 +60,17 @@ try {
     // No new content
     echo json_encode([
         'success' => true,
-        'translation' => "SELECT * FROM transcripts WHERE session_id = '$session_id' AND timestamp > '".$last_update."' ORDER BY timestamp DESC LIMIT 1"
+        'translation' => null
     ]);
 } catch (PDOException $e) {
     echo json_encode([
         'success' => false,
-        'error' => 'Database error: ' . $e->getMessage()."SELECT * FROM transcripts WHERE session_id = '$session_id' AND timestamp > '".$last_update."' ORDER BY timestamp DESC LIMIT 1"
+        'error' => 'Database error: ' . $e->getMessage()
     ]);
 }
 
 function translateWithOpenAI($api_key, $model, $text, $source_lang, $target_lang) {
-    $prompt = "*Note: If both same, just output the source text instead. Translate the following text from {$source_lang} to {$target_lang}:\n\n{$text}. ";
+    $prompt = "Translate the following text from {$source_lang} to {$target_lang}:\n\n{$text}. Note: If both same, just output the source text instead.";
     
     $response = openaiRequest($api_key, $model, $prompt);
     
