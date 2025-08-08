@@ -173,10 +173,14 @@ document.addEventListener('DOMContentLoaded', function() {
                             utterance.lang = currentLanguage;
                             synth.speak(utterance);
                             document.getElementById('readTranscript').value = "1";
-                            setTimeout(checkUpdates, 3000);
                         }
                     }
                         
+                }
+                
+                // Continue polling if session is still active
+                if (isSessionActive&&!isSpeaking) {
+                    setTimeout(checkUpdates, 3000);
                 }
 
             }
