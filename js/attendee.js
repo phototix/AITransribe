@@ -163,6 +163,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     historyContainer.appendChild(historyItem);
                 });
             }
+
+            setTimeout(loadHistory, 3000);
         }
 
         async function checkUpdates() {
@@ -217,9 +219,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 
         }
 
-        setTimeout(loadHistory, 3000);
         // Start polling
         checkUpdates();
+        loadHistory();
     }
 
     // Clean up on page unload
