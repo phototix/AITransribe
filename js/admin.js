@@ -61,8 +61,8 @@ async function showSessionDetails(sessionId) {
         const session = response.session;
         const baseUrl = window.location.origin;
         
-        document.getElementById('speakerUrl').value = `${baseUrl}speaker.html?session=${sessionId}`;
-        document.getElementById('attendeeUrl').value = `${baseUrl}attendee.html?session=${sessionId}`;
+        document.getElementById('speakerUrl').value = `${baseUrl}/speaker.html?session=${sessionId}`;
+        document.getElementById('attendeeUrl').value = `${baseUrl}/attendee.html?session=${sessionId}`;
         
         // Generate QR code for attendee URL
         generateQRCode(
