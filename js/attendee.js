@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <small class="text-muted">${new Date(item.timestamp).toLocaleString()}</small>
                         <div class="translation-text">${item.translated_text}</div>
                     `;
-                    historyContainer.innerHTML = historyItem;
+                    historyContainer.appendChild(historyItem);
                 });
             }
         }
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 
         }
-
+        
         setTimeout(loadHistory, 3000);
         // Start polling
         checkUpdates();

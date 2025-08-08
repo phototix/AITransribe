@@ -7,7 +7,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 $session_id = $data['session_id'] ?? '';
 $language = $data['language'] ?? 'en';
 $last_id = $data['last_id'] ?? 0;
-$limit = $data['limit'] ?? 30;
+$limit = $data['limit'] ?? 10;
 
 try {
     $stmt = $pdo->prepare("
