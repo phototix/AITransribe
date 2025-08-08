@@ -26,6 +26,7 @@ async function apiRequest(endpoint, data = {}) {
         });
         return await response.json();
     } catch (error) {
+        console.error('API Error on :'+endpoint+" :", error);
         return { success: false, error: error.message };
     }
 }
