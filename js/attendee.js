@@ -140,11 +140,12 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         async function loadHistory() {
+            console.log("load history now. ");
             const response = await apiRequest('translateHistory.php', {
                 session_id: sessionId,
                 language: currentLanguage,
                 last_id: document.getElementById('lastTranscriptId').value || 0,
-                limit: 30
+                limit: 10
             });
 
             if (response.success && response.history.length > 0) {
