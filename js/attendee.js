@@ -133,6 +133,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             console.log("Get translate-01");
+            console.log("session_id:" + sessionId);
+            console.log("language:" + currentLanguage);
+            console.log("last_update:" + lastUpdate);
             if (response.success && response.translation) {
                 console.log(response.translation.text);
                 document.getElementById('translationText').textContent = response.translation.text;
