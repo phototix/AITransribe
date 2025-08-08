@@ -146,6 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             console.log(response.success);
+            console.log(response.error);
             if (response.success && response.history.length > 0) {
                 // Process the history data
                 const historyContainer = document.getElementById('translationHistory');

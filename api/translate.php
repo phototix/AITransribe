@@ -16,7 +16,7 @@ try {
     $stmt->execute([$session_id]);
     $transcript = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if($last_id<>$transcript['id']){
+    if($last_id<>$transcript['id']&&$transcript){
         if ($transcript) {
             // Get OpenAI key for this session
             $stmt = $pdo->prepare("SELECT openai_key, model FROM sessions WHERE id = ?");
@@ -58,8 +58,6 @@ try {
             }
         }
     }
-    
-
     
     // No new content
     echo json_encode([
