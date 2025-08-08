@@ -131,9 +131,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Process the history data
             const historyContainer = document.getElementById('translationHistory');
             const lastItem = response.history[response.history.length - 1];
-            
-            // Update last_id for next request
-            document.getElementById('lastTranscriptId').value = lastItem.id;
 
             // Append new translations to history
             response.history.forEach(item => {
