@@ -14,13 +14,13 @@ body {
     border-radius: 5px;
     padding: 15px;
     min-height: 200px;
-    max-height: 400px;
+    max-height: 200px;
     overflow-y: auto;
 }
 
 .transcription-text, .translation-text {
     white-space: pre-wrap;
-    line-height: 1.6;
+    line-height: 1;
 }
 
 .badge {
