@@ -28,7 +28,14 @@ try {
 } catch (PDOException $e) {
     echo json_encode([
         'success' => false,
-        'error' => 'Database error: ' . $e->getMessage()
+        'error' => 'Database error: ' . $e->getMessage() . "
+        SELECT * FROM translations 
+        WHERE session_id = $session_id 
+        AND target_lang = $language
+        AND id > $last_id
+        ORDER BY timestamp ASC
+        LIMIT $limit
+    "
     ]);
 }
 ?>
