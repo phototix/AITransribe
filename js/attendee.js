@@ -207,7 +207,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Continue polling if session is still active
                 if (isSessionActive&&!isSpeaking) {
                     setTimeout(checkUpdates, 3000);
-                    setTimeout(loadHistory, 3000);
                 }
 
             }
@@ -215,6 +214,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 
         }
 
+
+        setTimeout(loadHistory, 3000);
         // Start polling
         checkUpdates();
     }
