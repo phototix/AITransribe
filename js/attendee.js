@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 // Continue polling if session is still active
-                if (isSessionActive) {
+                if (isSessionActive&&!isSpeaking) {
                     setTimeout(checkUpdates, 3000);
                 }
 
