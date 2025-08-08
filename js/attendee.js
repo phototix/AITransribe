@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     last_update: lastUpdate,
                     last_id: lastTranscriptId
                 });
-                console.log(response.success);
+                console.log(response.transcript_id);
                 
                 if (response.success && response.translation) {
 
