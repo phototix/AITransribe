@@ -45,7 +45,7 @@ try {
                 ]);
                 
                 echo json_encode([
-                    'success' => true,,
+                    'success' => true,
                     'transcript_id' => $transcript['id'],
                     'translation' => [
                         'text' => $translation,
