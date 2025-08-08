@@ -187,6 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 
         }
+
         // Start polling
         checkUpdates();
     }
