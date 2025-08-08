@@ -125,6 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let isSpeaking = false;
 
         const lastTranscriptId = document.getElementById('lastTranscriptId').value;
+        const readTranscript = document.getElementById('readTranscript').value;
 
         // Add event listeners for speech synthesis
         synth.onstart = function() {
@@ -147,13 +148,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     last_id: lastTranscriptId
                 });
                 if (response.success && response.translation) {
+
+                    if(document.getElementById('lastTranscriptId').value==response.transcript_id){
+                        document.getElementById('readTranscript').value = "0";
+                    }else{
+                        
+                    }
+
                     document.getElementById('lastTranscriptId').value = response.transcript_id;
                     console.log("id:" + response.transcript_id);
                     console.log(response.translation.text);
                     document.getElementById('translationText').textContent = response.translation.text;
                     lastUpdate = response.translation.timestamp;
 
-                    if(document.getElementById('lastTranscriptId').value == response.transcript_id){
+                    if(document.getElementById('readTranscript').value == "1"){
 
                     }else{
                         // Read aloud if enabled
@@ -164,6 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             utterance = new SpeechSynthesisUtterance(response.translation.text);
                             utterance.lang = currentLanguage;
                             synth.speak(utterance);
+                            document.getElementById('readTranscript').value = "1";
                         }
                     }
                         
