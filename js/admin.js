@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('sessionForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        const modal = bootstrap.Modal.getInstance(document.getElementById('createSessionModal'));
         const sessionTitle = document.getElementById('sessionTitle').value;
         const openaiKey = document.getElementById('openaiKey').value;
         const model = document.getElementById('modelSelect').value;
@@ -14,22 +15,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         if (response.success) {
+            modal.hide();
             showAlert('Session created successfully!');
             loadSessions();
             showSessionDetails(response.session_id);
+            
+            // Clear form
+            document.getElementById('sessionForm').reset();
         } else {
             showAlert('Error creating session: ' + response.error, 'danger');
         }
     });
-    
+
     // Load existing sessions
     async function loadSessions() {
         const response = await apiRequest('session_data.php', { action: 'list' });
-        
         if (response.success) {
             const tableBody = document.getElementById('sessionsTable');
             tableBody.innerHTML = '';
-            
             response.sessions.forEach(session => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -45,31 +48,31 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-    
+
     // Initial load
     loadSessions();
 });
 
 // Show session details in modal
 async function showSessionDetails(sessionId) {
-    const response = await apiRequest('session_data.php', { 
+    const response = await apiRequest('session_data.php', {
         action: 'get',
         session_id: sessionId
     });
-    
+
     if (response.success) {
         const session = response.session;
-        const baseUrl = window.location.origin;
+        const baseUrl = window.location.origin + "/";
         
-        document.getElementById('speakerUrl').value = `${baseUrl}/speaker.html?session=${sessionId}`;
-        document.getElementById('attendeeUrl').value = `${baseUrl}/attendee.html?session=${sessionId}`;
+        document.getElementById('speakerUrl').value = `${baseUrl}speaker.html?session=${sessionId}`;
+        document.getElementById('attendeeUrl').value = `${baseUrl}attendee.html?session=${sessionId}`;
         
         // Generate QR code for attendee URL
         generateQRCode(
-            `${baseUrl}/attendee.html?session=${sessionId}`,
+            `${baseUrl}attendee.html?session=${sessionId}`,
             'qrCodeContainer'
         );
-        
+
         // Show modal
         const modal = new bootstrap.Modal(document.getElementById('sessionDetailsModal'));
         modal.show();
