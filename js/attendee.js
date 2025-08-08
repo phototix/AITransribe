@@ -144,9 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 last_id: document.getElementById('lastTranscriptId').value || 0,
                 limit: 30
             });
-
-            console.log(response.success);
-            console.log(response.error);
             if (response.success && response.history.length > 0) {
                 // Process the history data
                 const historyContainer = document.getElementById('translationHistory');
