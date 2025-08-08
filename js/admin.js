@@ -59,7 +59,7 @@ async function showSessionDetails(sessionId) {
     
     if (response.success) {
         const session = response.session;
-        const baseUrl = window.location.origin + window.location.pathname;
+        const baseUrl = window.location.origin;
         
         document.getElementById('speakerUrl').value = `${baseUrl}speaker.html?session=${sessionId}`;
         document.getElementById('attendeeUrl').value = `${baseUrl}attendee.html?session=${sessionId}`;
