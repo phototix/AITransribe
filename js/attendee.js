@@ -149,10 +149,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 if (response.success && response.translation) {
 
-                    if(document.getElementById('lastTranscriptId').value==response.transcript_id){
-                        document.getElementById('readTranscript').value = "0";
-                    }else{
+                    if(document.getElementById('lastTranscriptId').value == response.transcript_id){
                         
+                    }else{
+                        document.getElementById('readTranscript').value = "0";
                     }
 
                     document.getElementById('lastTranscriptId').value = response.transcript_id;
