@@ -175,7 +175,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     last_update: lastUpdate,
                     last_id: document.getElementById('lastTranscriptId').value
                 });
-                console.log(response.translation);
 
                 if (response.success && response.translation) {
 
