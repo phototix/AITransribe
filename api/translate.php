@@ -68,7 +68,7 @@ try {
 }
 
 function translateWithOpenAI($api_key, $model, $text, $source_lang, $target_lang) {
-    $prompt = "Translate the following text from {$source_lang} to {$target_lang}:\n\n{$text}";
+    $prompt = "Translate the following text from {$source_lang} to {$target_lang}:\n\n{$text}. Note: If both same, just output the source text instead.";
     
     $response = openaiRequest($api_key, $model, $prompt);
     
