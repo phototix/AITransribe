@@ -60,7 +60,7 @@ try {
     // No new content
     echo json_encode([
         'success' => true,
-        'translation' => null
+        'translation' => "SELECT * FROM transcripts WHERE session_id = '$session_id' AND timestamp > '".$last_update."' ORDER BY timestamp DESC LIMIT 1"
     ]);
 } catch (PDOException $e) {
     echo json_encode([
