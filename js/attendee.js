@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('translationText').textContent = response.translation.text;
                     lastUpdate = response.translation.timestamp;
 
-                    if(lastTranscriptId === response.transcript_id){
+                    if(lastTranscriptId == response.transcript_id){
 
                     }else{
                         // Read aloud if enabled
