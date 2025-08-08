@@ -23,8 +23,12 @@ try {
             $stmt = $pdo->prepare("SELECT openai_key, model FROM sessions WHERE id = ?");
             $stmt->execute([$session_id]);
             $session = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $stmt = $pdo->prepare("SELECT * FROM translations WHERE session_id = ? AND original_text = ? AND target_lang = ?");
+            $stmt->execute([$session_id, $transcript['text'], $language]);
+            $checkTranslate = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            if ($session) {
+            if ($session && !$checkTranslate) {
                 // Translate using OpenAI
                 $translation = translateWithOpenAI(
                     $session['openai_key'],
