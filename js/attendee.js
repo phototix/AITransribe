@@ -158,12 +158,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         synth.speak(utterance);
                     }
                 }
+                
+                // Continue polling if session is still active
+                if (isSessionActive) {
+                    setTimeout(checkUpdates, 3000);
+                }
+
             }
 
-            // Continue polling if session is still active
-            if (isSessionActive) {
-                setTimeout(checkUpdates, 3000);
-            }
+                
         }
 
         // Start polling
