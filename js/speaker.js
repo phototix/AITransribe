@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         recognition.onerror = function(event) {
             console.error('Speech recognition error', event.error);
-            stopRecording.click();
+            startRecording.click();
             showAlert('Speech recognition error: ' + event.error, 'danger');
         };
     } else {

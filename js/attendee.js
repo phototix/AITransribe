@@ -122,29 +122,41 @@ document.addEventListener('DOMContentLoaded', function() {
     // Poll for new translations
     async function pollTranslations(sessionId) {
         let lastUpdate = 0;
+        let isSpeaking = false;
+
+        // Add event listeners for speech synthesis
+        synth.onstart = function() {
+            isSpeaking = true;
+        };
+
+        synth.onend = synth.onerror = function() {
+            isSpeaking = false;
+            utterance = null;
+        };
 
         async function checkUpdates() {
             if (!isSessionActive) return;
 
-            const response = await apiRequest('translate.php', {
-                session_id: sessionId,
-                language: currentLanguage,
-                last_update: lastUpdate
-            });
-            if (response.success && response.translation) {
-                console.log(response.translation.text);
-                document.getElementById('translationText').textContent = response.translation.text;
-                lastUpdate = response.translation.timestamp;
+            if (!isSpeaking) {
+                const response = await apiRequest('translate.php', {
+                    session_id: sessionId,
+                    language: currentLanguage,
+                    last_update: lastUpdate
+                });
+                if (response.success && response.translation) {
+                    console.log(response.translation.text);
+                    document.getElementById('translationText').textContent = response.translation.text;
+                    lastUpdate = response.translation.timestamp;
 
-                // Read aloud if enabled
-                if (audioEnabled && response.translation.text) {
-                    if (utterance) {
-                        synth.cancel();
+                    // Read aloud if enabled
+                    if (audioEnabled && response.translation.text) {
+                        if (utterance) {
+                            synth.cancel();
+                        }
+                        utterance = new SpeechSynthesisUtterance(response.translation.text);
+                        utterance.lang = currentLanguage;
+                        synth.speak(utterance);
                     }
-                    utterance = new SpeechSynthesisUtterance(response.translation.text);
-                    utterance.lang = currentLanguage;
-                    synth.speak(utterance);
-                    console.log("Get translate-02-Reading");
                 }
             }
 
