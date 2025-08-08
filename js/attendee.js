@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         async function loadHistory() {
-            console.log("load history now. ");
+            console.log("load history now.");
             const response = await apiRequest('translateHistory.php', {
                 session_id: sessionId,
                 language: currentLanguage,
@@ -148,9 +148,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 limit: 10
             });
 
+            console.log(response.success);
             if (response.success && response.history.length > 0) {
                 // Process the history data
                 const historyContainer = document.getElementById('translationHistory');
+                document.getElementById('translationHistory').innerHTML = "";
                 const lastItem = response.history[response.history.length - 1];
 
                 // Append new translations to history
