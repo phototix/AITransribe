@@ -11,8 +11,8 @@ $last_update = $data['last_update'] ?? date('Y-m-d').' 00:00:00';
 
 try {
     // Get the latest transcript
-    $stmt = $pdo->prepare("SELECT * FROM transcripts WHERE session_id = ? AND timestamp > ? ORDER BY timestamp DESC LIMIT 1");
-    $stmt->execute([$session_id, $last_update]);
+    $stmt = $pdo->prepare("SELECT * FROM transcripts WHERE session_id = ? ORDER BY timestamp DESC LIMIT 1");
+    $stmt->execute([$session_id]);
     $transcript = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if ($transcript) {
