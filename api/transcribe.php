@@ -16,7 +16,7 @@ try {
     $stmt->execute([$session_id, $text, $language, $timestamp]);
     
     // Also save to a text file for backup
-    $filename = "transcripts/session_{$session_id}.txt";
+    $filename = "../transcripts/session_{$session_id}.txt";
     file_put_contents($filename, "[{$timestamp}] {$text}\n", FILE_APPEND);
     
     echo json_encode(['success' => true]);
