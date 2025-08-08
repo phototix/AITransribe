@@ -145,6 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 limit: 30
             });
 
+            console.log(response.success);
             if (response.success && response.history.length > 0) {
                 // Process the history data
                 const historyContainer = document.getElementById('translationHistory');
@@ -218,6 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(loadHistory, 3000);
         // Start polling
         checkUpdates();
+        loadHistory();
     }
 
     // Clean up on page unload
