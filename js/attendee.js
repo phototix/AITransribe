@@ -121,6 +121,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Poll for new translations
     async function pollTranslations(sessionId) {
+        console.log("start poll "+sessionId);
+
         let lastUpdate = 0;
         let isSpeaking = false;
 
@@ -187,7 +189,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 
         }
-
         // Start polling
         checkUpdates();
     }
