@@ -133,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (response.success && response.translation) {
+                console.log(response.translation.text);
                 document.getElementById('translationText').textContent = response.translation.text;
                 lastUpdate = response.translation.timestamp;
 
