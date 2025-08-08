@@ -66,7 +66,7 @@ async function showSessionDetails(sessionId) {
         
         // Generate QR code for attendee URL
         generateQRCode(
-            `${baseUrl}attendee.html?session=${sessionId}`,
+            `${baseUrl}/attendee.html?session=${sessionId}`,
             'qrCodeContainer'
         );
         
