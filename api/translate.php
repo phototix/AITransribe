@@ -63,7 +63,7 @@ try {
 } catch (PDOException $e) {
     echo json_encode([
         'success' => false,
-        'error' => 'Database error: ' . $e->getMessage()."SELECT * FROM transcripts WHERE session_id = ? AND timestamp > ? ORDER BY timestamp DESC LIMIT 1"
+        'error' => 'Database error: ' . $e->getMessage()."SELECT * FROM transcripts WHERE session_id = '$session_id' AND timestamp > '".$transcript['timestamp']."' ORDER BY timestamp DESC LIMIT 1"
     ]);
 }
 
