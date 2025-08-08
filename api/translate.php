@@ -16,45 +16,43 @@ try {
     $stmt->execute([$session_id]);
     $transcript = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if($last_id<>$transcript['id']){
-        if ($transcript) {
-            // Get OpenAI key for this session
-            $stmt = $pdo->prepare("SELECT openai_key, model FROM sessions WHERE id = ?");
-            $stmt->execute([$session_id]);
-            $session = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($transcript) {
+        // Get OpenAI key for this session
+        $stmt = $pdo->prepare("SELECT openai_key, model FROM sessions WHERE id = ?");
+        $stmt->execute([$session_id]);
+        $session = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($session) {
+            // Translate using OpenAI
+            $translation = translateWithOpenAI(
+                $session['openai_key'],
+                $session['model'],
+                $transcript['text'],
+                $transcript['language'],
+                $language
+            );
             
-            if ($session) {
-                // Translate using OpenAI
-                $translation = translateWithOpenAI(
-                    $session['openai_key'],
-                    $session['model'],
+            if ($translation) {
+                // Save translation
+                $stmt = $pdo->prepare("INSERT INTO translations (session_id, original_text, translated_text, source_lang, target_lang, timestamp) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmt->execute([
+                    $session_id,
                     $transcript['text'],
+                    $translation,
                     $transcript['language'],
-                    $language
-                );
+                    $language,
+                    $transcript['timestamp']
+                ]);
                 
-                if ($translation) {
-                    // Save translation
-                    $stmt = $pdo->prepare("INSERT INTO translations (session_id, original_text, translated_text, source_lang, target_lang, timestamp) VALUES (?, ?, ?, ?, ?, ?)");
-                    $stmt->execute([
-                        $session_id,
-                        $transcript['text'],
-                        $translation,
-                        $transcript['language'],
-                        $language,
-                        $transcript['timestamp']
-                    ]);
-                    
-                    echo json_encode([
-                        'success' => true,
-                        'transcript_id' => $transcript['id'],
-                        'translation' => [
-                            'text' => $translation,
-                            'timestamp' => $transcript['timestamp'],
-                        ]
-                    ]);
-                    exit;
-                }
+                echo json_encode([
+                    'success' => true,
+                    'transcript_id' => $transcript['id'],
+                    'translation' => [
+                        'text' => $translation,
+                        'timestamp' => $transcript['timestamp'],
+                    ]
+                ]);
+                exit;
             }
         }
     }
