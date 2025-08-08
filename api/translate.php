@@ -7,7 +7,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 $session_id = $data['session_id'] ?? '';
 $language = $data['language'] ?? 'en';
-$last_update = $data['last_update'] ?? 0;
+$last_update = $data['last_update'] ?? date('Y-m-d').' 00:00:00';
 
 try {
     // Get the latest transcript
