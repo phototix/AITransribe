@@ -137,6 +137,35 @@ document.addEventListener('DOMContentLoaded', function() {
             utterance = null;
         };
 
+        async function loadHistory() {
+            const response = await apiRequest('translateHistory.php', {
+                session_id: sessionId,
+                language: currentLanguage,
+                last_id: document.getElementById('lastTranscriptId').value || 0,
+                limit: 30
+            });
+
+            if (response.success && response.history.length > 0) {
+                // Process the history data
+                const historyContainer = document.getElementById('translationHistory');
+                const lastItem = response.history[response.history.length - 1];
+                
+                // Update last_id for next request
+                document.getElementById('lastTranscriptId').value = lastItem.id;
+
+                // Append new translations to history
+                response.history.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    historyItem.innerHTML = `
+                        <small class="text-muted">${new Date(item.timestamp).toLocaleString()}</small>
+                        <div class="translation-text">${item.translated_text}</div>
+                    `;
+                    historyContainer.appendChild(historyItem);
+                });
+            }
+        }
+
         async function checkUpdates() {
             if (!isSessionActive) return;
 
