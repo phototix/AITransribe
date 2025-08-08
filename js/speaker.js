@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
         recognition.onerror = function(event) {
             console.error('Recognition error:', event.error);
             if (event.error === 'no-speech') {
+                startRecording.click();
                 // Automatically restart if no speech detected
                 recognition.start();
             }
