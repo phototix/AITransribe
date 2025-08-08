@@ -17,42 +17,45 @@ try {
     $transcript = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if ($transcript) {
-        // Get OpenAI key for this session
-        $stmt = $pdo->prepare("SELECT openai_key, model FROM sessions WHERE id = ?");
-        $stmt->execute([$session_id]);
-        $session = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if ($session) {
-            // Translate using OpenAI
-            $translation = translateWithOpenAI(
-                $session['openai_key'],
-                $session['model'],
-                $transcript['text'],
-                $transcript['language'],
-                $language
-            );
+
+        if($last_id <> $transcript["id"]){
+            // Get OpenAI key for this session
+            $stmt = $pdo->prepare("SELECT openai_key, model FROM sessions WHERE id = ?");
+            $stmt->execute([$session_id]);
+            $session = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            if ($translation) {
-                // Save translation
-                $stmt = $pdo->prepare("INSERT INTO translations (session_id, original_text, translated_text, source_lang, target_lang, timestamp) VALUES (?, ?, ?, ?, ?, ?)");
-                $stmt->execute([
-                    $session_id,
+            if ($session) {
+                // Translate using OpenAI
+                $translation = translateWithOpenAI(
+                    $session['openai_key'],
+                    $session['model'],
                     $transcript['text'],
-                    $translation,
                     $transcript['language'],
-                    $language,
-                    $transcript['timestamp']
-                ]);
+                    $language
+                );
                 
-                echo json_encode([
-                    'success' => true,
-                    'transcript_id' => $transcript['id'],
-                    'translation' => [
-                        'text' => $translation,
-                        'timestamp' => $transcript['timestamp'],
-                    ]
-                ]);
-                exit;
+                if ($translation) {
+                    // Save translation
+                    $stmt = $pdo->prepare("INSERT INTO translations (session_id, original_text, translated_text, source_lang, target_lang, timestamp) VALUES (?, ?, ?, ?, ?, ?)");
+                    $stmt->execute([
+                        $session_id,
+                        $transcript['text'],
+                        $translation,
+                        $transcript['language'],
+                        $language,
+                        $transcript['timestamp']
+                    ]);
+                    
+                    echo json_encode([
+                        'success' => true,
+                        'transcript_id' => $transcript['id'],
+                        'translation' => [
+                            'text' => $translation,
+                            'timestamp' => $transcript['timestamp'],
+                        ]
+                    ]);
+                    exit;
+                }
             }
         }
     }
@@ -70,7 +73,7 @@ try {
 }
 
 function translateWithOpenAI($api_key, $model, $text, $source_lang, $target_lang) {
-    $prompt = "Translate the following text from {$source_lang} to {$target_lang}:\n\n{$text}. Note: If both same, just output the source text instead.";
+    $prompt = "Note: If both same, just output the source text instead. Translate the following text from {$source_lang} to {$target_lang}:\n\n{$text}. ";
     
     $response = openaiRequest($api_key, $model, $prompt);
     
