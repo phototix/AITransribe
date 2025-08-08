@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <small class="text-muted">${new Date(item.timestamp).toLocaleString()}</small>
                         <div class="translation-text">${item.translated_text}</div>
                     `;
-                    historyContainer.html(historyItem);
+                    historyContainer.innerHTML = historyItem;
                 });
             }
         }
