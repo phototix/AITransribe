@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("session_id:" + sessionId);
             console.log("language:" + currentLanguage);
             console.log("last_update:" + lastUpdate);
-            console.log("response:" + response);
+            console.log("response:", JSON.stringify(response, null, 2));
             if (response.success && response.translation) {
                 console.log(response.translation.text);
                 document.getElementById('translationText').textContent = response.translation.text;
