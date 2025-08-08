@@ -148,6 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 if (response.success && response.translation) {
                     document.getElementById('lastTranscriptId').value = response.transcript_id;
+                    console.log("id:" + response.transcript_id);
                     console.log(response.translation.text);
                     document.getElementById('translationText').textContent = response.translation.text;
                     lastUpdate = response.translation.timestamp;
