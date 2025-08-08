@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendee - Translation System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 id="sessionTitle">Attendee View</h1>
+        
+        <div class="card mt-4" id="joinSessionCard">
+            <div class="card-header">
+                Join Session
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <p>Scan the QR code or enter the session ID below</p>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="sessionIdInput" placeholder="Enter Session ID">
+                    </div>
+                    <button id="joinSessionBtn" class="btn btn-primary">Join Session</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4 d-none" id="translationCard">
+            <div class="card-header">
+                Translation
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="targetLanguage" class="form-label">Select Language</label>
+                            <select class="form-select" id="targetLanguage">
+                                <option value="en">English</option>
+                                <option value="zh">Chinese</option>
+                                <option value="ms">Malay</option>
+                                <option value="ta">Tamil</option>
+                                <option value="th">Thai</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Audio</label>
+                            <div>
+                                <button id="toggleAudioBtn" class="btn btn-outline-primary">Enable Audio</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="translation-container mt-3">
+                    <div id="translationText" class="translation-text">
+                        <!-- Translation will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/attendee.js"></script>
+</body>
+</html>
