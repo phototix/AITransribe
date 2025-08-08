@@ -57,8 +57,25 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if ('webkitSpeechRecognition' in window) {
         recognition = new webkitSpeechRecognition();
-        recognition.continuous = true;
+        recognition.continuous = true;  // Ensure continuous listening
         recognition.interimResults = true;
+        recognition.lang = languageSelect.value;
+
+        // Add error handling
+        recognition.onerror = function(event) {
+            console.error('Recognition error:', event.error);
+            if (event.error === 'no-speech') {
+                // Automatically restart if no speech detected
+                recognition.start();
+            }
+        };
+
+        recognition.onend = function() {
+            // Automatically restart recognition when it ends
+            if (startRecording.disabled) { // If still in recording mode
+                recognition.start();
+            }
+        };
         
         recognition.onresult = function(event) {
             let interimTranscript = '';
@@ -92,20 +109,24 @@ document.addEventListener('DOMContentLoaded', function() {
         startRecording.disabled = true;
         showAlert('Speech recognition not supported in this browser', 'warning');
     }
-    
+
     startRecording.addEventListener('click', function() {
         recognition.lang = languageSelect.value;
         recognition.start();
         startRecording.disabled = true;
         stopRecording.disabled = false;
         showAlert('Recording started', 'success');
+        // Add visual indicator
+        document.getElementById('recordingIndicator').classList.remove('d-none');
     });
-    
+
     stopRecording.addEventListener('click', function() {
         recognition.stop();
         startRecording.disabled = false;
         stopRecording.disabled = true;
         showAlert('Recording stopped', 'info');
+        // Remove visual indicator
+        document.getElementById('recordingIndicator').classList.add('d-none');
     });
     
     // Load session details
