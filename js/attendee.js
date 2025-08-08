@@ -187,8 +187,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 
         }
-
-        setTimeout(loadHistory, 3000);
         // Start polling
         checkUpdates();
     }
