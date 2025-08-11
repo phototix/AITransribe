@@ -10,7 +10,7 @@ try {
         case 'add':
             $session_id = $data['session_id'] ?? '';
             $term = $data['term'] ?? '';
-            $actionType = $data['action'] ?? '';
+            $actionType = $data['actionType'] ?? '';
             $replacement = $data['replacement'] ?? null;
             $weight = $data['weight'] ?? 1.0;
 
