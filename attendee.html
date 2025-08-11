@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendee - Translation System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css?version=1" rel="stylesheet">
+    <link href="css/style.css?version=1.1" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-4">
@@ -67,8 +67,44 @@
                         <div id="translationText" class="translation-text"></div>
                     </div>
                     <div class="translation-container mt-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5>Translation History</h5>
+                            <button id="fullscreenHistoryBtn" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-fullscreen"></i> Full Screen
+                            </button>
+                        </div>
                         <div id="translationHistory" class="translation-text"></div>
                     </div>
+
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            Multi-Translation View
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Add Language</label>
+                                        <div class="input-group">
+                                            <select class="form-select" id="addLanguageSelect">
+                                                <option value="en">English</option>
+                                                <option value="zh">Chinese</option>
+                                                <option value="ms">Malay</option>
+                                                <option value="ta">Tamil</option>
+                                                <option value="th">Thai</option>
+                                            </select>
+                                            <button id="addLanguageBtn" class="btn btn-primary">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="multiTranslationContainer" class="row mt-3">
+                                <!-- Languages will be added here -->
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>

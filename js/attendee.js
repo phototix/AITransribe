@@ -1,3 +1,83 @@
+// Full screen functionality
+document.getElementById('fullscreenHistoryBtn').addEventListener('click', function() {
+    const historyContainer = document.getElementById('translationHistory');
+    historyContainer.requestFullscreen().catch(err => {
+        console.error('Error attempting fullscreen:', err);
+    });
+});
+
+// Multi-translation view
+const multiTranslationContainer = document.getElementById('multiTranslationContainer');
+const addLanguageBtn = document.getElementById('addLanguageBtn');
+const addLanguageSelect = document.getElementById('addLanguageSelect');
+
+addLanguageBtn.addEventListener('click', function() {
+    const language = addLanguageSelect.value;
+    const languageName = addLanguageSelect.options[addLanguageSelect.selectedIndex].text;
+    
+    // Check if already added
+    if (document.getElementById(`translation-${language}`)) {
+        showAlert('This language is already added', 'warning');
+        return;
+    }
+    
+    // Create new translation panel
+    const panel = document.createElement('div');
+    panel.className = 'col-md-6 mb-3';
+    panel.id = `translation-${language}`;
+    panel.innerHTML = `
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                ${languageName}
+                <button class="btn btn-sm btn-outline-danger" onclick="removeLanguagePanel('${language}')">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="multiTranslation-${language}" class="translation-text"></div>
+            </div>
+        </div>
+    `;
+    
+    multiTranslationContainer.appendChild(panel);
+    
+    // Start polling for this language
+    pollMultiTranslation(currentSessionId, language);
+});
+
+function removeLanguagePanel(language) {
+    const panel = document.getElementById(`translation-${language}`);
+    if (panel) {
+        panel.remove();
+    }
+}
+
+// Polling for multiple translations
+function pollMultiTranslation(sessionId, language) {
+    let lastUpdate = 0;
+    
+    async function checkUpdates() {
+        if (!isSessionActive) return;
+
+        const response = await apiRequest('translate.php', {
+            session_id: sessionId,
+            language: language,
+            last_update: lastUpdate
+        });
+        
+        if (response.success && response.translation) {
+            document.getElementById(`multiTranslation-${language}`).textContent = response.translation.text;
+            lastUpdate = response.translation.timestamp;
+        }
+        
+        if (isSessionActive) {
+            setTimeout(checkUpdates, 3000);
+        }
+    }
+    
+    checkUpdates();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session');
