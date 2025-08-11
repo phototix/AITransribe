@@ -3,9 +3,6 @@ header('Content-Type: application/json');
 require_once 'db_connect.php';
 require_once 'openai_helper.php';
 
-// In translate.php, before sending to OpenAI
-$blockedTerms = getBlockedTerms($session_id);
-
 $data = json_decode(file_get_contents('php://input'), true);
 
 $session_id = $data['session_id'] ?? '';
