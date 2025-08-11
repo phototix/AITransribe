@@ -1,23 +1,25 @@
 <?php
-function getBlockedTerms($session_id) {
-    global $pdo;
-    try {
-        $stmt = $pdo->prepare("SELECT term FROM blocked_terms WHERE session_id = ?");
-        $stmt->execute([$session_id]);
-        return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-    } catch (PDOException $e) {
-        error_log("Blocked terms error: " . $e->getMessage());
-        return [];
+function applyGlossaryRules($text, $glossaryTerms) {
+    foreach ($glossaryTerms as $term) {
+        switch ($term['action']) {
+            case 'block':
+                if (stripos($text, $term['term']) !== false) {
+                    return ''; // Block the entire text if term is found
+                }
+                break;
+                
+            case 'boost':
+                // Boost by repeating the term based on weight
+                $boostedTerm = str_repeat($term['term'] . ' ', $term['weight']);
+                $text = str_ireplace($term['term'], $boostedTerm, $text);
+                break;
+                
+            case 'replace':
+                $text = str_ireplace($term['term'], $term['replacement'], $text);
+                break;
+        }
     }
-}
-
-function applyBlockList($text, $blockedTerms) {
-    if (empty($blockedTerms)) return $text;
-    
-    // Create regex pattern (case insensitive, whole words only)
-    $pattern = '/\b(' . implode('|', array_map('preg_quote', $blockedTerms)) . ')\b/i';
-    
-    return preg_replace($pattern, '[REDACTED]', $text);
+    return $text;
 }
 
 function openaiRequest($api_key, $model, $prompt) {

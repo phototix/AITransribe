@@ -21,8 +21,6 @@ try {
     
     if ($transcript) {
 
-        $filteredText = applyBlockList($transcript['text'], $blockedTerms);
-
         if($last_id <> $transcript["id"]){
             // Get OpenAI key for this session
             $stmt = $pdo->prepare("SELECT openai_key, model FROM sessions WHERE id = ?");
@@ -32,6 +30,12 @@ try {
             $stmt = $pdo->prepare("SELECT * FROM translations WHERE session_id = ? AND original_text = ? AND target_lang = ?");
             $stmt->execute([$session_id, $transcript['text'], $language]);
             $checkTranslate = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $stmt = $pdo->prepare("SELECT * FROM glossary_terms WHERE session_id = ?");
+            $stmt->execute([$session_id]);
+            $glossaryTerms = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $processedText = applyGlossaryRules($transcript['text'], $glossaryTerms);
             
             if ($session) {
 
@@ -49,7 +53,7 @@ try {
                     $translation = translateWithOpenAI(
                         $session['openai_key'],
                         $session['model'],
-                        $transcript['text'],
+                        $processedText,
                         $transcript['language'],
                         $language
                     );
@@ -59,7 +63,7 @@ try {
                         $stmt = $pdo->prepare("INSERT INTO translations (session_id, original_text, translated_text, source_lang, target_lang, timestamp) VALUES (?, ?, ?, ?, ?, ?)");
                         $stmt->execute([
                             $session_id,
-                            $transcript['text'],
+                            $processedText,
                             $translation,
                             $transcript['language'],
                             $language,

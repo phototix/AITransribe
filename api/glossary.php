@@ -1,33 +1,59 @@
 <?php
 header('Content-Type: application/json');
 require_once 'db_connect.php';
-require_once 'openai_helper.php';
 
 $data = json_decode(file_get_contents('php://input'), true);
+$action = $data['action'] ?? '';
 
-switch ($data['action']) {
-    case 'update_blocked':
-        $session_id = $data['session_id'];
-        $terms = $data['terms'];
-        
-        try {
-            // Clear existing
-            $pdo->prepare("DELETE FROM blocked_terms WHERE session_id = ?")
-                ->execute([$session_id]);
-            
-            // Insert new
-            $stmt = $pdo->prepare("INSERT INTO blocked_terms (session_id, term) VALUES (?, ?)");
-            foreach ($terms as $term) {
-                $stmt->execute([$session_id, trim($term)]);
-            }
+try {
+    switch ($action) {
+        case 'add':
+            $session_id = $data['session_id'] ?? '';
+            $term = $data['term'] ?? '';
+            $actionType = $data['action'] ?? '';
+            $replacement = $data['replacement'] ?? null;
+            $weight = $data['weight'] ?? 1.0;
+
+            $stmt = $pdo->prepare("
+                INSERT INTO glossary_terms 
+                (session_id, term, action, replacement, weight) 
+                VALUES (?, ?, ?, ?, ?)
+            ");
+            $stmt->execute([$session_id, $term, $actionType, $replacement, $weight]);
             
             echo json_encode(['success' => true]);
-        } catch (PDOException $e) {
-            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
-        }
-        break;
-        
-    default:
-        echo json_encode(['success' => false, 'error' => 'Invalid action']);
+            break;
+
+        case 'list':
+            $session_id = $data['session_id'] ?? '';
+            $stmt = $pdo->prepare("SELECT * FROM glossary_terms WHERE session_id = ?");
+            $stmt->execute([$session_id]);
+            $terms = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            echo json_encode([
+                'success' => true,
+                'terms' => $terms
+            ]);
+            break;
+
+        case 'delete':
+            $term_id = $data['term_id'] ?? '';
+            $stmt = $pdo->prepare("DELETE FROM glossary_terms WHERE id = ?");
+            $stmt->execute([$term_id]);
+            
+            echo json_encode(['success' => true]);
+            break;
+
+        default:
+            echo json_encode([
+                'success' => false,
+                'error' => 'Invalid action'
+            ]);
+    }
+} catch (PDOException $e) {
+    echo json_encode([
+        'success' => false,
+        'error' => 'Database error: ' . $e->getMessage()
+    ]);
 }
 ?>
