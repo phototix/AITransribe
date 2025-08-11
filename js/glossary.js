@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(sessionId); // Should show "6895b74942dff"
 
     // Show/hide fields based on action
-    document.getElementById('action').addEventListener('change', function() {
+    document.getElementById('actionType').addEventListener('change', function() {
         const action = this.value;
         const replacementContainer = document.getElementById('replacementContainer');
         const weightContainer = document.getElementById('weightContainer');
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         
         const term = document.getElementById('term').value.trim();
-        const action = document.getElementById('action').value;
+        const actionType = document.getElementById('actionType').value;
         const replacement = document.getElementById('replacement').value.trim();
         const weight = parseFloat(document.getElementById('weight').value) || 1.0;
 
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
             action: 'add',
             session_id: sessionId,
             term,
-            action,
+            actionType,
             replacement,
             weight
         });
