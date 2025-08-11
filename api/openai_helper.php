@@ -1,4 +1,25 @@
 <?php
+function getBlockedTerms($session_id) {
+    global $pdo;
+    try {
+        $stmt = $pdo->prepare("SELECT term FROM blocked_terms WHERE session_id = ?");
+        $stmt->execute([$session_id]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+    } catch (PDOException $e) {
+        error_log("Blocked terms error: " . $e->getMessage());
+        return [];
+    }
+}
+
+function applyBlockList($text, $blockedTerms) {
+    if (empty($blockedTerms)) return $text;
+    
+    // Create regex pattern (case insensitive, whole words only)
+    $pattern = '/\b(' . implode('|', array_map('preg_quote', $blockedTerms)) . ')\b/i';
+    
+    return preg_replace($pattern, '[REDACTED]', $text);
+}
+
 function openaiRequest($api_key, $model, $prompt) {
     $url = 'https://api.openai.com/v1/chat/completions';
     

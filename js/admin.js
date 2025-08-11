@@ -53,6 +53,15 @@ document.addEventListener('DOMContentLoaded', function() {
     loadSessions();
 });
 
+async function updateBlockedTerms(sessionId, terms) {
+    const response = await apiRequest('glossary.php', {
+        action: 'update_blocked',
+        session_id: sessionId,
+        terms: terms.split('\n').filter(t => t.trim())
+    });
+    showAlert(response.success ? 'Blocked terms updated' : 'Error: ' + response.error);
+}
+
 // Show session details in modal
 async function showSessionDetails(sessionId) {
     const response = await apiRequest('session_data.php', {
