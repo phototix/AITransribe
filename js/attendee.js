@@ -43,6 +43,7 @@ addLanguageBtn.addEventListener('click', function() {
     
     // Start polling for this language
     pollMultiTranslation(currentSessionId, language);
+    
 });
 
 function removeLanguagePanel(language) {
