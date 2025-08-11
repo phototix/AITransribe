@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Singapore');
 $host = 'localhost';
 $dbname = 'translation_system';
 $username = 'root';
