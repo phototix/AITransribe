@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const sessionId = urlParams.get('session');
     document.getElementById('sessionId').value = sessionId;
 
+    console.log(window.location.search); // Should show "?session=6895b74942dff"
+    console.log(sessionId); // Should show "6895b74942dff"
+
     // Show/hide fields based on action
     document.getElementById('action').addEventListener('change', function() {
         const action = this.value;
