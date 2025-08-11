@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 response.history.forEach(item => {
                     const historyItem = document.createElement('div');
                     historyItem.className = 'history-item';
-                    historyItem.innerHTML = `<small style="display:block;" class="text-muted alert alert-warning">${new Date(item.timestamp).toLocaleString()}</small><div class="translation-text" style="margin-top:5px;">${item.translated_text}</div>`;
+                    historyItem.innerHTML = `<small style="display:block;padding:2px;margin:2px;" class="text-muted alert alert-warning">${new Date(item.timestamp).toLocaleString()}</small><div class="translation-text" style="margin-top:5px;margin-bottom:5px;">${item.translated_text}</div>`;
                     historyContainer.appendChild(historyItem);
                 });
             }
