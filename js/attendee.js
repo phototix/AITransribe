@@ -240,8 +240,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     const historyItem = document.createElement('div');
                     historyItem.className = 'history-item';
                     historyItem.innerHTML = `
-                        <small class="text-muted alert alert-warning">${new Date(item.timestamp).toLocaleString()}</small>
-                        <div class="translation-text">${item.translated_text}</div>
+                        <small style="display:none;" class="text-muted alert alert-warning">${new Date(item.timestamp).toLocaleString()}</small>
+                        <div class="translation-text" style="margin-top:5px;">${item.translated_text}</div>
                     `;
                     historyContainer.appendChild(historyItem);
                 });
