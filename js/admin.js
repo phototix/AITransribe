@@ -53,15 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loadSessions();
 });
 
-async function updateBlockedTerms(sessionId, terms) {
-    const response = await apiRequest('glossary.php', {
-        action: 'update_blocked',
-        session_id: sessionId,
-        terms: terms.split('\n').filter(t => t.trim())
-    });
-    showAlert(response.success ? 'Blocked terms updated' : 'Error: ' + response.error);
-}
-
 // Show session details in modal
 async function showSessionDetails(sessionId) {
     const response = await apiRequest('session_data.php', {
@@ -75,6 +66,7 @@ async function showSessionDetails(sessionId) {
         
         document.getElementById('speakerUrl').value = `${baseUrl}speaker.html?session=${sessionId}`;
         document.getElementById('attendeeUrl').value = `${baseUrl}attendee.html?session=${sessionId}`;
+        document.getElementById('sessionId').value = sessionId;
         
         // Generate QR code for attendee URL
         generateQRCode(
@@ -87,5 +79,12 @@ async function showSessionDetails(sessionId) {
         modal.show();
     } else {
         showAlert('Error loading session details: ' + response.error, 'danger');
+    }
+}
+
+function gotoGloassayManage(){
+    const sessionId = document.getElementById('sessionId').value;
+    if (sessionId) {
+        window.location.href = `glossary.html?session=${sessionId}`;
     }
 }
