@@ -34,6 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
             weight
         });
 
+        console.log(response.success);
+
         if (response.success) {
             loadGlossaryTerms();
             document.getElementById('glossaryForm').reset();

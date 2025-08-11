@@ -47,7 +47,7 @@ try {
         default:
             echo json_encode([
                 'success' => false,
-                'error' => 'Invalid action'
+                'error' => 'Invalid action'.$data['action']
             ]);
     }
 } catch (PDOException $e) {
