@@ -38,6 +38,31 @@
                     </table>
                 </div>
             </div>
+            
+            <!-- In admin.html -->
+            <div class="card mt-4">
+                <div class="card-header">Session Glossary</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5>Block Terms</h5>
+                            <textarea class="form-control" id="blockTerms"></textarea>
+                            <button class="btn btn-sm btn-danger mt-2">Update Block List</button>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>Boost Terms</h5>
+                            <textarea class="form-control" id="boostTerms"></textarea>
+                            <button class="btn btn-sm btn-warning mt-2">Update Boost List</button>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>Replace Terms</h5>
+                            <textarea class="form-control" id="replaceTerms"></textarea>
+                            <button class="btn btn-sm btn-success mt-2">Update Replace List</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- Create Session Modal -->
@@ -64,29 +89,6 @@
                                     <option value="gpt-4">GPT-4</option>
                                     <option value="gpt-3.5-turbo" selected>GPT-3.5 Turbo</option>
                                 </select>
-                            </div>
-                            <!-- In admin.html -->
-                            <div class="card mt-4">
-                                <div class="card-header">Session Glossary</div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <h5>Block Terms</h5>
-                                            <textarea class="form-control" id="blockTerms"></textarea>
-                                            <button class="btn btn-sm btn-danger mt-2">Update Block List</button>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <h5>Boost Terms</h5>
-                                            <textarea class="form-control" id="boostTerms"></textarea>
-                                            <button class="btn btn-sm btn-warning mt-2">Update Boost List</button>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <h5>Replace Terms</h5>
-                                            <textarea class="form-control" id="replaceTerms"></textarea>
-                                            <button class="btn btn-sm btn-success mt-2">Update Replace List</button>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </form>
                     </div>
